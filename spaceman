@@ -1,0 +1,32 @@
+#! /usr/bin/env ruby
+
+require 'print_r'
+
+input = ARGF.read
+$ips = []
+
+puts "SPF-formatted input record"
+puts input
+
+def scan_spf(input)
+  $ips.push(input.scan /(ip4:([^\s]*))/)
+  $ips.push(input.scan /(ip6:([^\s]*))/)
+
+  includes = input.scan /include:([^\s]*)/
+  includes.each do | incl |
+    incl = incl[0].delete '"'
+    record = `dig TXT #{incl} +short`
+
+    puts '-------------------'
+    puts "dig TXT #{incl} +short"
+    puts record
+
+    scan_spf(record)
+  end
+end
+
+scan_spf(input)
+$ips = $ips.flatten.select{| ip | ip[/^ip/] }.sort!
+
+puts '-------------------'
+puts PrintR.generate $ips
