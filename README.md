@@ -17,7 +17,7 @@ bundle install
 ### Pipe a raw SPF record into `spaceman`
 
 ```bash
-echo "v=spf1 a mx ptr mx:aspmx.l.google.com include:_spf.google.com include:sendgrid.net include:mail.zendesk.com ~all" | spaceman
+dig TXT wepay.com +short | spaceman
 ```
 
 ### Read a file containing the SPF record
