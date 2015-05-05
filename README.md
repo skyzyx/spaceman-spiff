@@ -1,6 +1,9 @@
 # Spaceman Spiff
 
-Takes an SPF-specific DNS record and recursively resolves all `include:` markers down to a flat list of IPs.
+Takes an SPF-specific DNS record and recursively resolves all `include:` markers
+down to a flat list of IPs. This can be used to manually update the list of IPs,
+or when we need to add an additional SPF record and want to keep the DNS lookup
+count low.
 
 ## Installation
 
