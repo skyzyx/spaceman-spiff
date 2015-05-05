@@ -1,8 +1,5 @@
 #! /usr/bin/env ruby
 
-require 'print_r'
-require 'slop'
-
 # Initial cleanup and setup
 input = ARGF.read
 input.delete! '"'
