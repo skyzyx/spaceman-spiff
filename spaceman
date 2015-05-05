@@ -42,7 +42,11 @@ prefix = input
   .gsub(/~all/, '')
   .gsub(/\s+/, ' ')
 
-puts '-------------------'
+puts ''
+puts '***********************'
+puts 'DNS RECORDS TO CREATE:'
+puts '***********************'
+puts ''
 
 # Things to apply to every record
 spf = "v=spf1"
@@ -73,9 +77,9 @@ end
 idx = 0
 $dns.each do | value |
   if idx == 0
-    puts "# TXT wepay.com (#{value.length})"
+    puts "# TXT wepay.com (#{value.length} chars)"
   else
-    puts "# TXT spf#{idx}.wepay.com (#{value.length})"
+    puts "# TXT spf#{idx}.wepay.com (#{value.length} chars)"
   end
 
   puts value
