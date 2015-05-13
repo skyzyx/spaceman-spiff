@@ -1,16 +1,32 @@
-# Spaceman Spiff
+# [Spaceman Spiff](https://www.google.com/search?q=Spaceman%20Spiff)
 
 Takes an SPF-specific DNS record and recursively resolves all `include:` markers
 down to a flat list of IPs. This can be used to manually update the list of IPs,
 or when we need to add an additional SPF record and want to keep the DNS lookup
 count low.
 
+This app has two ports: Ruby and Go. The Ruby version was written first, and was
+later ported to Go. They should be identical, making it a good opportunity to
+learn Go if you already know some Ruby.
+
+The Ruby source code is shorter, but the compiled Go binary runs measurably
+faster. Go appears to be the lovechild of Python and C. If that's something
+you're into, you're gonna love Go.
+
 ## Installation
 
-Dependencies are installed using [Bundler].
+1. [Install Go](https://golang.org)
+2. Compile the Go source code into a binary.
 
 ```bash
-bundle install
+go build ./spaceman.go
+#=> spaceman
+```
+
+If you are making changes to the app, you can run the app in interpreter mode instead.
+
+```bash
+go run ./spaceman.go
 ```
 
 ## Examples
@@ -21,6 +37,7 @@ dig TXT wepay.com +short | spaceman
 ```
 
 ### Read a file containing the SPF record
+
 ```bash
 spaceman spf.txt
 ```
@@ -76,5 +93,3 @@ v=spf1 ip4:74.63.236.0/24 ip4:74.63.247.0/24 ip4:75.126.200.128/27 ip4:75.126.25
 # TXT spf5.wepay.com (35 chars)
 v=spf1 ip6:2c0f:fb50:4000::/36 ~all
 ```
-
-  [Bundler]: http://bundler.io
