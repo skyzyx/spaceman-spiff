@@ -19,16 +19,16 @@ you're into, you're gonna love Go.
 
 2. Install dependencies.
 
-```bash
-go get github.com/yuya-takeyama/argf
-```
+   ```bash
+   go get github.com/yuya-takeyama/argf
+   ```
 
 3. Compile the Go source code into a binary.
 
-```bash
-go build ./spaceman.go
-#=> spaceman
-```
+   ```bash
+   go build ./spaceman.go
+   #=> spaceman
+   ```
 
 If you are making changes to the app, you can run the app in interpreter mode instead.
 
