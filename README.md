@@ -16,7 +16,14 @@ you're into, you're gonna love Go.
 ## Installation
 
 1. [Install Go](https://golang.org)
-2. Compile the Go source code into a binary.
+
+2. Install dependencies.
+
+```bash
+go get github.com/yuya-takeyama/argf
+```
+
+3. Compile the Go source code into a binary.
 
 ```bash
 go build ./spaceman.go
