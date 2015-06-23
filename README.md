@@ -5,15 +5,20 @@ down to a flat list of IPs. This can be used to manually update the list of IPs,
 or when we need to add an additional SPF record and want to keep the DNS lookup
 count low.
 
-This app has two ports: Ruby and Go. The Ruby version was written first, and was
-later ported to Go. They should be identical, making it a good opportunity to
-learn Go if you already know some Ruby.
+This app has three ports: Ruby, Go and Swift 2.0. The Ruby version was written 
+first, and was later ported to Go, then again to Swift 2.0. They should be 
+(nearly) identical, making it a good opportunity to learn Go and Swift if you 
+already know some Ruby.
 
 The Ruby source code is shorter, but the compiled Go binary runs measurably
 faster. Go appears to be the lovechild of Python and C. If that's something
 you're into, you're gonna love Go.
 
-## Installation
+Swift 2.0 feels more comfortable if you come from a Ruby, JavaScript, C#, Scala 
+or **Modern** PHP (and/or Hack) background because it borrows concepts from 
+across the board.
+
+## Installation (Go version)
 
 1. [Install Go](https://golang.org)
 
@@ -30,7 +35,8 @@ you're into, you're gonna love Go.
    #=> spaceman
    ```
 
-If you are making changes to the app, you can run the app in interpreter mode instead.
+If you are making changes to the app, you can run the app in interpreter mode 
+instead.
 
 ```bash
 go run ./spaceman.go
@@ -99,4 +105,37 @@ v=spf1 ip4:74.63.236.0/24 ip4:74.63.247.0/24 ip4:75.126.200.128/27 ip4:75.126.25
 
 # TXT spf5.wepay.com (35 chars)
 v=spf1 ip6:2c0f:fb50:4000::/36 ~all
+```
+
+## Installation (Swift version)
+
+Written in **Swift 2.0**, which requires **Xcode 7.0** or newer to compile.
+
+(This version does not (yet) support `spaceman spf.txt` syntax. It only supports 
+piping from `STDIN`.)
+
+
+1. [Install Xcode 7.0 (Beta)](https://developer.apple.com/xcode/downloads/)
+
+2. Set your default Xcode compiler, accept the license agreement, and install 
+   the CLI tools.
+
+   ```bash
+   sudo xcode-select -s /Applications/Xcode-beta.app/
+   sudo xcode-select --install
+   sudo xcodebuild -license
+   ```
+
+3. Compile the Swift source code into a binary.
+
+   ```bash
+   swiftc -sdk `xcrun --show-sdk-path` spaceman.swift
+   #=> spaceman
+   ```
+
+If you are making changes to the app, you can run the app in interpreter mode 
+instead.
+
+```bash
+swift ./spaceman.swift
 ```
