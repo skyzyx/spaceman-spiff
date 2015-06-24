@@ -47,7 +47,7 @@ puts ''
 
 # Things to apply to every record
 spf = "v=spf1"
-swc = "include:spf0.wepay.com ~all"
+swc = "include:spf0.wepay.com -all"
 
 # We need to start cutting-up the string
 $ips = prefix + $ips.join(' ')
@@ -65,7 +65,7 @@ while $ips.length > 0 do
     $dns[idx] = sprintf("%s %s %s", spf, $ips[0..s], swc.gsub(/spf0\./, "spf#{idx + 1}.")).gsub(/\s+/, ' ')
     $ips = $ips.slice(s, $ips.length).to_s.strip
   else
-    $dns[idx] = sprintf("%s %s ~all", spf, $ips[0..s])
+    $dns[idx] = sprintf("%s %s -all", spf, $ips[0..s])
     $ips = $ips.slice(s, $ips.length).to_s.strip
   end
 end

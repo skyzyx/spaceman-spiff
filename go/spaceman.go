@@ -47,7 +47,7 @@ func main() {
 
 	// Things to apply to every record
 	spf := "v=spf1"
-	swc := "include:spf0.wepay.com ~all"
+	swc := "include:spf0.wepay.com -all"
 
 	// We need to start cutting-up the string
 	ip_string := fmt.Sprint(prefix, strings.Join(ips, " "))
@@ -75,7 +75,7 @@ func main() {
 			dns = append(dns, dns_string)
 			ip_string = strings.Trim(ip_string[s:], "\r\n ")
 		} else {
-			dns = append(dns, fmt.Sprintf("%s %s ~all", spf, ip_string[0:]))
+			dns = append(dns, fmt.Sprintf("%s %s -all", spf, ip_string[0:]))
 			ip_string = ""
 		}
 	}
