@@ -4,14 +4,33 @@ import Foundation
 
 // Extend the String object with helpers
 extension String {
+
+    // String.trim()
     func trim() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
     }
 
+    // String.delete()
     func delete(char: String) -> String {
         return "".join(self.componentsSeparatedByString(char))
     }
 
+    // String.replace(); similar to JavaScript's String.replace() and Ruby's String.gsub()
+    func replace(pattern: String, replacement: String) -> String {
+        let regex = try! NSRegularExpression(
+            pattern: pattern,
+            options: [.CaseInsensitive]
+        )
+
+        return regex.stringByReplacingMatchesInString(
+            self,
+            options: [.WithTransparentBounds],
+            range: NSMakeRange(0, self.characters.count),
+            withTemplate: replacement
+        )
+    }
+
+    // String.scan(); similar to Ruby's String.scan()
     func scan(regex: String) throws -> [String] {
         let regex = try! NSRegularExpression(
             pattern: regex,
@@ -70,6 +89,7 @@ func scanSpf(input: String, inout ips: [String]) {
     let includes = try! input.scan("include:([^\\s]*)").map {
         $0.delete("include:")
     }
+
     for incl in includes {
         let inclu = incl.delete("\"")
         let record = shell("dig TXT \(inclu) +short")
@@ -92,30 +112,28 @@ print("SPF-formatted input record")
 print(input)
 
 scanSpf(input, ips: &ips)
-
 ips.sortInPlace {
-    $0.localizedCaseInsensitiveCompare($1) == NSComparisonResult.OrderedAscending
+    $0.compare($1, options: NSStringCompareOptions.NumericSearch) == NSComparisonResult.OrderedAscending
 }
 
 print(ips)
 
+// Take the original input and strip away what we've already resolved
+let prefix = input
+    .replace("include:([^\\s]*)", replacement: "")
+    .replace("ip(4|6):([^\\s]*)", replacement: "")
+    .replace("(~|-)all", replacement: "")
+    .replace("\\s+", replacement: " ")
 
-// # # Take the original input and strip away what we've already resolved
-// # prefix = input
-// #   .gsub(/include:([^\s]*)/, '')
-// #   .gsub(/ip(4|6):([^\s]*)/, '')
-// #   .gsub(/~all/, '')
-// #   .gsub(/\s+/, ' ')
+print("")
+print("***********************")
+print("DNS RECORDS TO CREATE:")
+print("***********************")
+print("")
 
-// # puts ''
-// # puts '***********************'
-// # puts 'DNS RECORDS TO CREATE:'
-// # puts '***********************'
-// # puts ''
-
-// # # Things to apply to every record
-// # spf = "v=spf1"
-// # swc = "include:spf0.wepay.com ~all"
+// Things to apply to every record
+let spf = "v=spf1"
+let swc = "include:spf0.wepay.com ~all"
 
 // # # We need to start cutting-up the string
 // # $ips = prefix + $ips.join(' ')

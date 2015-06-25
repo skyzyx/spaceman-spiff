@@ -34,7 +34,7 @@ func main() {
 	var prefix string
 	prefix = regexp.MustCompile(`include:([^\s]*)`).ReplaceAllString(input, "")
 	prefix = regexp.MustCompile(`ip(4|6):([^\s]*)`).ReplaceAllString(prefix, "")
-	prefix = regexp.MustCompile(`~all`).ReplaceAllString(prefix, "")
+	prefix = regexp.MustCompile(`(~|-)all`).ReplaceAllString(prefix, "")
 	prefix = regexp.MustCompile(`\s+`).ReplaceAllString(prefix, " ")
 
 	// fmt.Printf("\nPREFIX: [%s]\n", prefix)
