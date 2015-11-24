@@ -1,1 +1,1 @@
-"v=spf1 a mx ptr mx:aspmx.l.google.com include:_spf.google.com include:sendgrid.net include:mail.zendesk.com -all"
+"v=spf1 a mx ptr mx:aspmx.l.google.com include:_spf.google.com include:sendgrid.net include:mail.zendesk.com include:mktomail.com -all"
