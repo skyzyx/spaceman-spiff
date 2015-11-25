@@ -1,5 +1,7 @@
 ## Installation (Go version)
 
+> **NOTE:** This version has a few small bugs. Use the Ruby version instead.
+
 1. [Install Go](https://golang.org)
 
 2. Install dependencies.
