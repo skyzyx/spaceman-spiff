@@ -36,7 +36,7 @@ $ips = $ips.flatten.select{| ip | ip[/^ip/] }.sort!
 prefix = input
   .gsub(/include:([^\s]*)/, '')
   .gsub(/ip(4|6):([^\s]*)/, '')
-  .gsub(/~all/, '')
+  .gsub(/-all/, '')
   .gsub(/\s+/, ' ')
 
 puts ''
