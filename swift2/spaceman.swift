@@ -7,12 +7,13 @@ extension String {
 
     // String.trim()
     func trim() -> String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let whitespace = NSCharacterSet.whitespaceCharacterSet()
+        return self.stringByTrimmingCharactersInSet(whitespace)
     }
 
     // String.delete()
     func delete(char: String) -> String {
-        return "".join(self.componentsSeparatedByString(char))
+        return self.componentsSeparatedByString(char).joinWithSeparator("")
     }
 
     // String.replace(); similar to JavaScript's String.replace() and Ruby's String.gsub()
@@ -48,6 +49,20 @@ extension String {
         return results.map {
             nsString.substringWithRange($0.range)
         }
+    }
+
+    // String.substring(); similar to JavaScript's String.subString()
+    func substring(start: Int, end: Int) -> String {
+        let range = Range(start: self.startIndex.advancedBy(start), end: self.startIndex.advancedBy(end))
+        return self.substringWithRange(range)
+    }
+
+    // String.lastIndexOf(); similar to JavaScript's String.lastIndexOf() and Ruby's String.rindex()
+    func lastIndexOf(target: String) -> Int? {
+        if let range = self.rangeOfString(target, options: .BackwardsSearch) {
+            return startIndex.distanceTo(range.startIndex)
+        }
+        return nil
     }
 }
 
@@ -135,10 +150,12 @@ print("")
 let spf = "v=spf1"
 let swc = "include:spf0.wepay.com ~all"
 
-// # # We need to start cutting-up the string
-// # $ips = prefix + $ips.join(' ')
-// # idx = 0
-// # s = $ips[0..$base_length].rindex(' ')
+// We need to start cutting-up the string
+
+var ipString = prefix + ips.joinWithSeparator(" ")
+var idx = 0
+var s = ipString.substring(0, end: baseLength).lastIndexOf(" ")
+
 // # $dns[idx] = $ips[0..s] + swc.gsub(/spf0./, "spf#{idx + 1}.")
 // # $ips = $ips.slice(s, $ips.length).strip
 
