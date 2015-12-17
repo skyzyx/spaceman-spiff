@@ -37,8 +37,6 @@ func main() {
 	prefix = regexp.MustCompile(`(~|-)all`).ReplaceAllString(prefix, "")
 	prefix = regexp.MustCompile(`\s+`).ReplaceAllString(prefix, " ")
 
-	// fmt.Printf("\nPREFIX: [%s]\n", prefix)
-
 	fmt.Println("")
 	fmt.Println("***********************")
 	fmt.Println("DNS RECORDS TO CREATE:")
@@ -70,7 +68,7 @@ func main() {
 		if len(ip_string) >= base_length {
 			spf_index := fmt.Sprint("spf", (idx + 1), ".")
 			spf_subdomain := regexp.MustCompile(`spf0.`).ReplaceAllString(swc, spf_index)
-			dns_string := fmt.Sprintf("%s %s %s", spf, ip_string[0:base_length], spf_subdomain)
+			dns_string := fmt.Sprintf("%s %s %s", spf, ip_string[0:s], spf_subdomain)
 			dns_string = strings.Trim(regexp.MustCompile(`\s+`).ReplaceAllString(dns_string, " "), "\r\n ")
 			dns = append(dns, dns_string)
 			ip_string = strings.Trim(ip_string[s:], "\r\n ")
