@@ -117,7 +117,9 @@ func scanSpf(input: String, inout ips: [String]) {
     }
 }
 
+// Initialize
 var input = readStdIn().delete("\"").trim()
+var idx = 0
 var ips: [String] = []
 var dns: [String] = []
 var baseLength = 220 // Max length of a string before we start prepending/appending
@@ -150,39 +152,58 @@ print("")
 let spf = "v=spf1"
 let swc = "include:spf0.wepay.com ~all"
 
-// We need to start cutting-up the string
-
+// Flatten array into a space-delimited string
 var ipString = prefix + ips.joinWithSeparator(" ")
-var idx = 0
+
+// Marker for the end of the string, within the confines of our boundaries
 var s = ipString.substring(0, end: baseLength).lastIndexOf(" ")
 
-// # $dns[idx] = $ips[0..s] + swc.gsub(/spf0./, "spf#{idx + 1}.")
-// # $ips = $ips.slice(s, $ips.length).strip
+// Produce the first record
+dns.append(ipString.substring(0, end: s!) + " " + swc.replace("spf0.", replacement: "spf\(idx + 1)."))
 
-// # # Break the list into chunks
-// # while $ips.length > 0 do
-// #   idx = idx + 1
+// Trim to only what's left to process
+ipString = ipString.substring(s!, end: ipString.characters.count).trim()
 
-// #   if $ips.length >= $base_length
-// #     s = $ips[0..$base_length].rindex(' ')
-// #     $dns[idx] = sprintf("%s %s %s", spf, $ips[0..s], swc.gsub(/spf0\./, "spf#{idx + 1}.")).gsub(/\s+/, ' ')
-// #     $ips = $ips.slice(s, $ips.length).to_s.strip
-// #   else
-// #     $dns[idx] = sprintf("%s %s ~all", spf, $ips[0..s])
-// #     $ips = $ips.slice(s, $ips.length).to_s.strip
-// #   end
-// # end
+// Break the list into chunks
+while ipString.characters.count > 0 {
 
-// # # Display the list
-// # idx = 0
-// # $dns.each do | value |
-// #   if idx == 0
-// #     puts "# TXT wepay.com (#{value.length} chars)"
-// #   else
-// #     puts "# TXT spf#{idx}.wepay.com (#{value.length} chars)"
-// #   end
+    // Increment
+    idx = idx + 1
 
-// #   puts value
-// #   puts ""
-// #   idx = idx + 1
-// # end
+    if ipString.characters.count >= baseLength {
+        s = ipString.substring(0, end: baseLength).lastIndexOf(" ")
+        dns.append(
+            spf
+            + ipString
+                .substring(0, end: s!)
+            + swc
+                .replace("spf0.", replacement: "spf\(idx + 1).")
+                .replace("\\s+", replacement: " ")
+        )
+        ipString = ipString.substring(s!, end: ipString.characters.count).trim()
+    } else {
+        dns.append(
+            ipString
+                .substring(0, end: s!)
+            + swc
+                .replace("spf0.", replacement: "spf\(idx + 1).")
+            + " -all"
+        )
+        ipString = ipString.substring(s!, end: ipString.characters.count).trim()
+    }
+}
+
+
+// Display the list
+idx = 0
+for value in dns {
+    if idx == 0 {
+        print("# TXT wepay.com (\(value.characters.count) chars)")
+    } else {
+        print("# TXT spf#{idx}.wepay.com (\(value.characters.count) chars)")
+    }
+
+    print(value)
+    print("")
+    idx = idx + 1
+}
