@@ -64,6 +64,16 @@ extension String {
         }
         return nil
     }
+
+    // String.len(); similar to JavaScript's String.length property
+    func len() -> Int {
+        return self.characters.count
+    }
+
+    // String.split(); similar to JavaScript's String.split() or PHP's explode()
+    func split(separator: String) -> Array<String> {
+        return self.componentsSeparatedByString(separator)
+    }
 }
 
 // Run shell scripts
@@ -89,9 +99,16 @@ func shell(input: String) -> (output: String, exitCode: Int32) {
     return (output, task.terminationStatus)
 }
 
-// Read from STDIN
-func readStdIn() -> String {
-    let keyboard = NSFileHandle.fileHandleWithStandardInput()
+// Read from STDIN or file; similar to Ruby's argF
+func argf() -> String {
+    var keyboard: NSFileHandle;
+
+    if Process.arguments.count == 1 {
+        keyboard = NSFileHandle.fileHandleWithStandardInput()
+    } else {
+        keyboard = NSFileHandle(forReadingAtPath: Process.arguments[1])!
+    }
+
     let inputData = keyboard.availableData
     return NSString(data: inputData, encoding:NSUTF8StringEncoding) as! String
 }
@@ -118,7 +135,7 @@ func scanSpf(input: String, inout ips: [String]) {
 }
 
 // Initialize
-var input = readStdIn().delete("\"").trim()
+var input = argf().delete("\"").trim()
 var idx = 0
 var ips: [String] = []
 var dns: [String] = []
@@ -130,10 +147,8 @@ print(input)
 
 scanSpf(input, ips: &ips)
 ips.sortInPlace {
-    $0.compare($1, options: NSStringCompareOptions.NumericSearch) == NSComparisonResult.OrderedAscending
+    $0.compare($1, options: NSStringCompareOptions.LiteralSearch) == NSComparisonResult.OrderedAscending
 }
-
-print(ips)
 
 // Take the original input and strip away what we've already resolved
 let prefix = input
@@ -150,7 +165,7 @@ print("")
 
 // Things to apply to every record
 let spf = "v=spf1"
-let swc = "include:spf0.wepay.com ~all"
+let swc = "include:spf0.wepay.com -all"
 
 // Flatten array into a space-delimited string
 var ipString = prefix + ips.joinWithSeparator(" ")
@@ -159,48 +174,47 @@ var ipString = prefix + ips.joinWithSeparator(" ")
 var s = ipString.substring(0, end: baseLength).lastIndexOf(" ")
 
 // Produce the first record
-dns.append(ipString.substring(0, end: s!) + " " + swc.replace("spf0.", replacement: "spf\(idx + 1)."))
+dns.append([
+    ipString.substring(0, end: s!),
+    swc.replace("spf0.", replacement: "spf\(idx + 1).")
+].joinWithSeparator(" "))
 
 // Trim to only what's left to process
-ipString = ipString.substring(s!, end: ipString.characters.count).trim()
+ipString = ipString.substring(s!, end: ipString.len()).trim()
 
 // Break the list into chunks
-while ipString.characters.count > 0 {
+while ipString.len() > 0 {
 
     // Increment
     idx = idx + 1
 
-    if ipString.characters.count >= baseLength {
+    if ipString.len() >= baseLength {
         s = ipString.substring(0, end: baseLength).lastIndexOf(" ")
-        dns.append(
-            spf
-            + ipString
-                .substring(0, end: s!)
-            + swc
+        dns.append([
+            spf,
+            ipString.substring(0, end: s!),
+            swc
                 .replace("spf0.", replacement: "spf\(idx + 1).")
                 .replace("\\s+", replacement: " ")
-        )
-        ipString = ipString.substring(s!, end: ipString.characters.count).trim()
+        ].joinWithSeparator(" "))
+        ipString = ipString.substring(s!, end: ipString.len()).trim()
     } else {
-        dns.append(
-            ipString
-                .substring(0, end: s!)
-            + swc
-                .replace("spf0.", replacement: "spf\(idx + 1).")
-            + " -all"
-        )
-        ipString = ipString.substring(s!, end: ipString.characters.count).trim()
+        dns.append([
+            spf,
+            ipString,
+            "-all"
+        ].joinWithSeparator(" "))
+        ipString = ""
     }
 }
-
 
 // Display the list
 idx = 0
 for value in dns {
     if idx == 0 {
-        print("# TXT wepay.com (\(value.characters.count) chars)")
+        print("# TXT wepay.com (\(value.len()) chars)")
     } else {
-        print("# TXT spf#{idx}.wepay.com (\(value.characters.count) chars)")
+        print("# TXT spf\(idx).wepay.com (\(value.len()) chars)")
     }
 
     print(value)
