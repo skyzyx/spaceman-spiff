@@ -4,8 +4,6 @@ you're into, you're gonna love Go.
 
 ## Installation (Go version)
 
-> **NOTE:** This version has a few small bugs. Use the Ruby version instead.
-
 1. [Install Go](https://golang.org)
 
 2. Install dependencies.
@@ -24,5 +22,5 @@ you're into, you're gonna love Go.
 If you are making changes to the app, you can run the app in interpreter mode instead.
 
 ```bash
-go run ./spaceman.go
+go run go/spaceman.go spf.txt
 ```

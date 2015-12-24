@@ -28,5 +28,5 @@ If you are making changes to the app, you can run the app in interpreter mode
 instead.
 
 ```bash
-swift ./spaceman.swift
+swift swift2/spaceman.swift spf.txt
 ```

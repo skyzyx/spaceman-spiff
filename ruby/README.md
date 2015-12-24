@@ -5,5 +5,5 @@
 Run the app in interpreter mode.
 
 ```bash
-ruby ./spaceman.rb
+ruby ruby/spaceman.rb spf.txt
 ```
