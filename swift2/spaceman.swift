@@ -53,7 +53,7 @@ extension String {
 
     // String.substring(); similar to JavaScript's String.subString()
     func substring(start: Int, end: Int) -> String {
-        let range = Range(start: self.startIndex.advancedBy(start), end: self.startIndex.advancedBy(end))
+        let range = Range(self.startIndex.advancedBy(start) ..< self.startIndex.advancedBy(end))
         return self.substringWithRange(range)
     }
 

@@ -4,9 +4,9 @@ across the board.
 
 ## Installation (Swift version)
 
-Written in **Swift 2.1**, which requires **Xcode 7.2** or newer to compile.
+Written in **Swift 2.2**, which requires **Xcode 7.3** or newer to compile.
 
-1. [Install Xcode 7.2](https://developer.apple.com/xcode/downloads/)
+1. [Install Xcode 7.3](https://developer.apple.com/xcode/downloads/)
 
 2. Set your default Xcode compiler, accept the license agreement, and install 
    the CLI tools.
