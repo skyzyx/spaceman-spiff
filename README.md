@@ -1,11 +1,15 @@
 # [Spaceman Spiff](https://www.google.com/search?q=Spaceman%20Spiff)
 
-Takes an SPF-specific DNS record and recursively resolves all `include:` markers
-down to a flat list of IPs. This can be used to manually update the list of IPs,
-or when we need to add an additional SPF record and want to keep the DNS lookup
-count low.
+Once upon a time, when I used to work for [WePay](https://wepay.com), we faced an issue: We were trying to send emails via so many third-party services (Google Apps, Sendmail, Amazon SES, Marketo, various other tools), that we exceeded the [SPF-mandated DNS lookup limit](https://sendgrid.com/docs/Classroom/Deliver/Sender_Authentication/spf_dont_exceed_ten_dns_lookups.html) by several, causing many of our emails to be flagged as spam.
 
-For learning purposes, this application has ports written in multiple languages.
+So I wrote this (fairly naïve) tool to recursively resolve all `include:` markers down to a flat list of IPs. This can be used to manually update the list of IPs, or when we need to add an additional SPF record and want to keep the DNS lookup count low.
+
+* It doesn't resolve smaller CIDRs into larger/overlapping ones, but it should someday.
+* There are better ways of bundling multiple records into a single DNS lookup that I never got around to implementing.
+
+After working on this, I realized that this particular problem touched on many of the core fundamentals of programming (e.g., string parsing, arrays, sets, queue vs. recursion, performance vs. scalability, regular expressions). So I began using this as a starting point for learning new languages. As such, this application has multiple ports. None are particularly good, but it has allowed me to become a better polyglot.
+
+> **NOTE:** This software was written on my own time and with my own equipment. It is the property of myself, and not WePay. This product is not affiliated with WePay, but I used the SPF records from wepay.com as a starting point.
 
 ## Examples
 ### Pipe a raw SPF record into `spaceman`
