@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		FBEEAAC220A3497200F5A20D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEEAAC120A3497100F5A20D /* main.swift */; };
+		FBEEAAC820A34F2D00F5A20D /* SpacemanSpiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEEAAC020A3497100F5A20D /* SpacemanSpiff.framework */; };
 		OBJ_29 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				FBEEAAC820A34F2D00F5A20D /* SpacemanSpiff.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

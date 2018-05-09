@@ -1,6 +1,7 @@
 #! /usr/bin/env swift
 
 import Foundation
+import SwiftShell
 
 // Extend the String object with helpers
 extension String {
@@ -33,7 +34,8 @@ func argf() -> String {
     return String(decoding: inputData, as: UTF8.self)
 }
 
-var input = argf().delete(char: "\"").trim()
+var input = try main.arguments.first.map {try open($0)} ?? main.stdin
+    //argf().delete(char: "\"").trim()
 
 // Where do we start?
 print("SPF-formatted input record")
