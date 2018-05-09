@@ -1,3 +1,5 @@
+> **IMPORTANT:** This port is a work-in-progress and currently won't work/compile. Skip this port for now.
+
 Swift feels comfortable if you come from a Ruby, JavaScript, C#, Scala  or **Modern** PHP (and/or Hack) background because it borrows concepts from  across the board.
 
 ## Installation (Swift version)
