@@ -31,7 +31,7 @@ Written in **Swift 4.1**, which requires **Xcode 9.3** or newer to compile.
 1. Compile the Swift source code into a binary.
 
    ```bash
-   swiftc -sdk `xcrun --show-sdk-path` -o spaceman ./Sources/main.swift
+   swiftc -sdk `xcrun --show-sdk-path` -o spaceman ./Sources/SpacemanSpiff/main.swift
    #=> spaceman
 
    ./spaceman ../../spf.txt
